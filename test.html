@@ -4,9 +4,38 @@ hello there I am ready to be uploaded
 hello there.
 today is thursday. faisal made a change
   
-  http://api.themoviedb.org/3/movie/popular?api_key=90787843a200cfbfd55b14b39270f6a1
-  
-  https://api.themoviedb.org/3/movie/{movie_id}/videos?api_key=90787843a200cfbfd55b14b39270f6a1
+1) http://api.themoviedb.org/3/movie/popular?api_key=90787843a200cfbfd55b14b39270f6a1
+
+
+Use this API to fetch the popular movies and display movies and Use backdrop path to show thumbnails 
+and on click on any image show info of that particular image show poster path 
+BASE url for image is 
+http://image.tmdb.org/t/p/w780/
+imageposter/backdrop_path path append to the url
+
+
+2) https://api.themoviedb.org/3/movie/top_rated?api_key=90787843a200cfbfd55b14b39270f6a1
+
+this api is for top rated movies
+
+
+
+3) https://api.themoviedb.org/3/movie/{movie_id}/videos?api_key=90787843a200cfbfd55b14b39270f6a1
+
+from ist or 2nd api you will get movie id and pass that movie id in this api and u will get trailers of that movies
+and will play those video in youtube app
+
+
+String YOUTUBE_THUMBNAIL_URL = "http://img.youtube.com/vi/";
+        String YOUTUBE_IMAGE_EXT = "/0.jpg";
+        final String YOUTUBE_APP_URI = "vnd.youtube:";
+      
+for playing you need YOUTUBE_APP_URI + key
+
+
+4) https://api.themoviedb.org/3/movie/movie_id/reviews?api_key=90787843a200cfbfd55b14b39270f6a1
+Use this api to display reviews
+
   
 </body>
 </html>
