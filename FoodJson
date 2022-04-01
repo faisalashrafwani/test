@@ -1,0 +1,72 @@
+[{
+        "restaurantLabel": "Amazing Foods",
+        "id": "rest1",
+        "foodImg": "https://images.pexels.com/photos/3026808/pexels-photo-3026808.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2.jpg",
+        "foodItem": "Chicken, Gravy items, Wazwan",
+        "location": "Soura"
+
+    }, {
+        "restaurantLabel": "Amigos",
+        "id": "rest2",
+        "foodImg": "https://images.pexels.com/photos/3026808/pexels-photo-3026808.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2.jpg",
+        "foodItem": "Chicken, Gravy items, Wazwan",
+        "location": "Hazratbal"
+
+    }, {
+        "restaurantLabel": "Pizzetaria",
+        "id": "3",
+        "foodImg": "https://images.pexels.com/photos/3026808/pexels-photo-3026808.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2.jpg",
+        "foodItem": "Chicken, Gravy items, Wazwan",
+        "location": "Soura"
+
+    }, {
+        "restaurantLabel": "Chill Out",
+        "id": "4",
+        "foodImg": "https://images.pexels.com/photos/3026808/pexels-photo-3026808.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2.jpg",
+        "foodItem": "Chicken, Gravy items, Wazwan",
+        "location": "Soura"
+
+    }, {
+        "restaurantLabel": "Khas Khen",
+        "id": "5",
+        "foodImg": "https://images.pexels.com/photos/3026808/pexels-photo-3026808.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2.jpg",
+        "foodItem": "Chicken, Gravy items, Wazwan",
+        "location": "Soura"
+
+    }, {
+        "restaurantLabel": "Savoury Kitchen",
+        "id": "6",
+        "foodImg": "https://images.pexels.com/photos/3026808/pexels-photo-3026808.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2.jpg",
+        "foodItem": "Chicken, Gravy items, Wazwan",
+        "location": "Soura"
+
+    }, {
+        "restaurantLabel": "Pizza Castle",
+        "id": "7",
+        "foodImg": "https://images.pexels.com/photos/3026808/pexels-photo-3026808.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2.jpg",
+        "foodItem": "Chicken, Gravy items, Wazwan",
+        "location": "Soura"
+
+    }, {
+        "restaurantLabel": "Food Inn",
+        "id": "8",
+        "foodImg": "https://images.pexels.com/photos/3026808/pexels-photo-3026808.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2.jpg",
+        "foodItem": "Chicken, Gravy items, Wazwan",
+        "location": "Soura"
+
+    }, {
+        "restaurantLabel": "Lean Meal Box",
+        "id": "9",
+        "foodImg": "https://images.pexels.com/photos/3026808/pexels-photo-3026808.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2.jpg",
+        "foodItem": "Chicken, Gravy items, Wazwan",
+        "location": "Soura"
+
+    }, {
+        "restaurantLabel": "Mazi Balaye",
+        "id": "10",
+        "foodImg": "https://images.pexels.com/photos/3026808/pexels-photo-3026808.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2.jpg",
+        "foodItem": "Chicken, Gravy items, Wazwan",
+        "location": "Soura"
+
+    }
+]
