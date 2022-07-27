@@ -1,0 +1,86 @@
+let taskResults = taskViewController.result.results
+            //FETCH RESULTS
+            for stepResults in taskResults! as! [ORKStepResult]{
+                for result in stepResults.results! {
+                    
+                    //NAME STEP
+                    if result.identifier == "QuestionStep" {
+                        let nameResult = result as? ORKQuestionResult
+                        jsonDict["id"] = id
+                        if let user = nameResult?.answer {
+                            jsonDict["name"] = user
+                        } else {
+                            jsonDict["name"] = defaultValue
+                        }
+                        id += 1
+                        jsonArrayTop.append(jsonDict)
+                    }
+                    
+                    //QUALIFICATION STEP
+                    if result.identifier == "TextChoiceQuestionStep" {
+                        let qualificationResult = result as? ORKQuestionResult
+                        jsonDict["id"] = id
+                        if let qualificationRes = qualificationResult?.answer {
+                            let x = qualificationRes as! [String]
+                            let qualification = x.first!
+                            jsonDict["qualification"] = qualification
+                            
+                        } else {
+                            jsonDict["qualification"] = defaultValue
+                        }
+                        id += 1
+                        jsonArrayTop.append(jsonDict)
+                    }
+                    
+                    //IMAGE STEP
+                    if result.identifier == "ImageChoiceQuestionStep" {
+                        let imageChoiceResult = result as? ORKQuestionResult
+                        jsonDict["id"] = id
+                        if let choiceImage = imageChoiceResult?.answer {
+                            let x = choiceImage as! [String]
+                            let choice = x.first!
+                            jsonDict["adventureType"] = choice
+                            
+                        } else {
+                            jsonDict["adventureType"] = defaultValue
+                        }
+                        id += 1
+                        jsonArrayTop.append(jsonDict)
+                    }
+                    
+                    //SIGNATURE STEP
+                    if result.identifier == "SignatureStepForSurvey" {
+                        print("hellotherejson")
+                        
+                        let signatureResult = result as? ORKSignatureResult
+                        if let signature = signatureResult?.signatureImage {
+                            let imageData = signature.pngData()!
+                            let signatureString = imageData.base64EncodedString(options: Data.Base64EncodingOptions.lineLength64Characters)
+                            jsonDict["signature"] = signatureString
+                        } else {
+                            jsonDict["signature"] = defaultValue
+                        }
+                    }
+                    
+                    
+//                    if result.identifier == "AudioRecordStepInSurvey" {
+//                        let audioResult = result as? ORKAudioRecorder
+//                        if let audioRecord = audioResult?.audioRecorder{
+//
+//                        }
+//                    }
+//
+//                    if result.identifier == "ImageCaptureStepInSurvey" {
+//                        let imageResult = result as? ORKImageCaptureStep
+//                        let image = imageResult?.image
+//                    }
+                        
+                }
+                jsonDict = [:]
+            }
+            jsonDict["id"] = id
+            jsonDict["timeCaptureLocal"] = dateTimeCaptureLocal()
+            jsonDict["timeCaptureUTC"] = dateTimeCaptureUTC()
+            jsonArrayTop.append(jsonDict)
+            jsonDict = [:]
+            id = 1
