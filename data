@@ -1,25 +1,84 @@
-let taskResults = taskViewController.result.results
+//
+//  ViewController.swift
+//  DemoResearchKitApp
+//
+//  Created by Applied Informatics on 20/04/22.
+//
+
+import UIKit
+import ResearchKit
+
+class ViewController: UIViewController {
+    var defaultValue: String = "##########"
+    
+    final let timestampId: Int = 4
+
+    var jsonArrayTop: [Any] = []
+    var jsonDict: [String : Any] = [:]
+    
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view.
+    }
+    
+    func dateTimeCaptureLocal() -> String {
+        
+        let formatter = DateFormatter()
+        formatter.timeZone = .current
+        formatter.locale = .current
+        formatter.dateFormat = "yyyy-MM-dd'T'HH: mm: ssZ"
+        return (formatter.string(from: Date()))
+    }
+    func dateTimeCaptureUTC() -> String {
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH: mm: ssZ"
+        dateFormatter.timeZone = TimeZone(identifier: "UTC")
+        dateFormatter.locale = Locale(identifier: "en_US")
+        print("date here: \((dateFormatter.string(from: Date())))")
+        return (dateFormatter.string(from: Date()))
+    }
+    
+    
+    @IBAction func surveyTapped(_ sender: Any) {
+
+        let taskViewController = ORKTaskViewController(task: SurveyTask, taskRun: nil)
+          taskViewController.delegate = self
+          taskViewController.outputDirectory = URL(fileURLWithPath: NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0], isDirectory: true)
+          present(taskViewController, animated: true, completion: nil)
+    }
+    
+}
+
+extension ViewController: ORKTaskViewControllerDelegate {
+    func taskViewController(_ taskViewController: ORKTaskViewController, didFinishWith reason: ORKTaskViewControllerFinishReason, error: Error?) {
+        
+        switch reason {
+        case .saved, .completed:
+            
+            let taskResults = taskViewController.result.results
+            
             //FETCH RESULTS
             for stepResults in taskResults! as! [ORKStepResult]{
                 for result in stepResults.results! {
                     
                     //NAME STEP
-                    if result.identifier == "QuestionStep" {
+                    if result.identifier == "1" {
                         let nameResult = result as? ORKQuestionResult
-                        jsonDict["id"] = id
+                        jsonDict["id"] = Int(result.identifier)
                         if let user = nameResult?.answer {
                             jsonDict["name"] = user
                         } else {
                             jsonDict["name"] = defaultValue
                         }
-                        id += 1
                         jsonArrayTop.append(jsonDict)
                     }
                     
                     //QUALIFICATION STEP
-                    if result.identifier == "TextChoiceQuestionStep" {
+                    if result.identifier == "2" {
                         let qualificationResult = result as? ORKQuestionResult
-                        jsonDict["id"] = id
+                        jsonDict["id"] = Int(result.identifier)
                         if let qualificationRes = qualificationResult?.answer {
                             let x = qualificationRes as! [String]
                             let qualification = x.first!
@@ -28,14 +87,13 @@ let taskResults = taskViewController.result.results
                         } else {
                             jsonDict["qualification"] = defaultValue
                         }
-                        id += 1
                         jsonArrayTop.append(jsonDict)
                     }
                     
                     //IMAGE STEP
-                    if result.identifier == "ImageChoiceQuestionStep" {
+                    if result.identifier == "3" {
                         let imageChoiceResult = result as? ORKQuestionResult
-                        jsonDict["id"] = id
+                        jsonDict["id"] = Int(result.identifier)
                         if let choiceImage = imageChoiceResult?.answer {
                             let x = choiceImage as! [String]
                             let choice = x.first!
@@ -44,12 +102,11 @@ let taskResults = taskViewController.result.results
                         } else {
                             jsonDict["adventureType"] = defaultValue
                         }
-                        id += 1
                         jsonArrayTop.append(jsonDict)
                     }
                     
                     //SIGNATURE STEP
-                    if result.identifier == "SignatureStepForSurvey" {
+                    if result.identifier == "4" {
                         print("hellotherejson")
                         
                         let signatureResult = result as? ORKSignatureResult
@@ -63,14 +120,14 @@ let taskResults = taskViewController.result.results
                     }
                     
                     
-//                    if result.identifier == "AudioRecordStepInSurvey" {
+//                    if result.identifier == "5" {
 //                        let audioResult = result as? ORKAudioRecorder
 //                        if let audioRecord = audioResult?.audioRecorder{
 //
 //                        }
 //                    }
 //
-//                    if result.identifier == "ImageCaptureStepInSurvey" {
+//                    if result.identifier == "6" {
 //                        let imageResult = result as? ORKImageCaptureStep
 //                        let image = imageResult?.image
 //                    }
@@ -78,9 +135,36 @@ let taskResults = taskViewController.result.results
                 }
                 jsonDict = [:]
             }
-            jsonDict["id"] = id
+            jsonDict["id"] = timestampId
             jsonDict["timeCaptureLocal"] = dateTimeCaptureLocal()
             jsonDict["timeCaptureUTC"] = dateTimeCaptureUTC()
             jsonArrayTop.append(jsonDict)
             jsonDict = [:]
-            id = 1
+            
+            //CREATION OF JSON FILE
+            do {
+                let jsonData = try JSONSerialization.data(withJSONObject: jsonArrayTop, options: .prettyPrinted)
+                
+                let fileManager = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+                
+                let jsonURL = fileManager.first?.appendingPathComponent("researchKit.json")
+                
+                print("PathOfJSONFile: \(jsonURL!)")
+                
+                try jsonData.write(to: jsonURL!)
+            }
+            
+            catch {
+                print(error)
+            }
+            
+        default: break
+        }
+        taskViewController.dismiss(animated: true, completion: nil)
+    }
+
+    
+
+}
+
+
