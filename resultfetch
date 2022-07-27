@@ -1,0 +1,46 @@
+    func checkAllowedResponsesMatchesSurveyResponses(_ taskResult: ORKTaskResult) -> Bool {
+
+        guard let stepResults = taskResult.results as? [ORKStepResult] else {
+            return false
+        }
+
+        var answer:AnyObject?
+
+        //FIXME:- This logic needs to be fixed, if ORKFileResult -> Crashing for Video
+        for results: ORKStepResult in stepResults {
+            for result in results.results! {
+                if result is ORKChoiceQuestionResult {
+                    answer = result.value(forKey: "answer") as AnyObject?
+                    if (answer?.count != 0){
+                        guard let question = self.currentlyActiveSurvey?.filterQuestionByQuestionSurveyId(Int(result.identifier)!) else {
+                            continue
+                        }
+                        guard let allowedResponses = question.allowed_responses else {
+                            continue
+                        }
+                        for expected in allowedResponses {
+                            if !expected.is_expected_value {
+                                if ((answer?.allObjects.contains{$0 as! String == expected.value}) == true) {
+                                    return false
+                                }
+                            }
+                        }
+                    }
+                } else if result is ORKFileResult {
+                    guard let fileURL = (result as? ORKFileResult)?.fileURL else {
+                        debugPrint("No file found")
+                        return false
+                    }
+
+                    fileURL.compressVideo(completion: { (compressedAtURL) in
+                        debugPrint(compressedAtURL ?? "CompressedAtURL is nill")
+                    })
+
+
+                } else {
+                    debugPrint("Unknown result")
+                }
+            }
+        }
+        return true
+    }
