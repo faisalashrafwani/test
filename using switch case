@@ -1,0 +1,129 @@
+//
+//  using case ViewController.swift
+//  DemoResearchKitApp
+//
+//  Created by admin on 28/07/22.
+//
+
+import UIKit
+
+class using_case_ViewController: UIViewController {
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        // Do any additional setup after loading the view.
+    }
+    switch reason{
+    case .text, .health, .height, .longText, .email:
+        guard let textResult = result as? ORKTextQuestionResult else {
+            break
+        }
+        observation.str_value = textResult.textAnswer
+        print("answer time stamppppppp \(textResult.startDate) and \(textResult.endDate)")
+        break
+    case .singleChoice, .dropdown:
+        guard let choiceResult = result as? ORKChoiceQuestionResult else {
+            break
+        }
+        guard let answer = choiceResult.choiceAnswers?.first as? String else {
+            break
+        }
+        print("answer time stamppppppp \(choiceResult.startDate) and \(choiceResult.endDate)")
+        observation.str_value = answer
+        break
+    case .integer:
+        let numericResult = result as? ORKNumericQuestionResult
+        observation.int_value = numericResult?.numericAnswer?.intValue
+        print("answer time stamppppppp \(numericResult?.startDate ) and \(numericResult?.endDate ) ")
+        break
+    case .double:
+        let numericResult = result as? ORKNumericQuestionResult
+        observation.double_value = numericResult?.numericAnswer?.doubleValue
+        break
+    case .multipleChoice, .imageChoice, .singleImage, .multipleImage:
+        let choiceResult = result as! ORKChoiceQuestionResult
+        if (choiceResult.choiceAnswers == nil) {
+            break
+        }
+
+        var svalues = [String]();
+        for choice: Any in choiceResult.choiceAnswers! {
+
+            svalues.append(String(describing: choice))
+        }
+
+        if svalues.count > 0 {
+            observation.str_value = ";;"+svalues.joined(separator: ";;")+";;"
+        }
+
+        if (!observation.hasValidValue()) {
+            break
+        }
+        print("answer time stamppppppp \(choiceResult.startDate) and \(choiceResult.endDate) ")
+        break
+    case .boolean:
+        guard let boolResult = result as? ORKBooleanQuestionResult else {
+            break
+        }
+        observation.int_value = boolResult.booleanAnswer?.intValue
+        break
+    case .dateAndTime, .date:
+        guard let dateResult = result as? ORKDateQuestionResult else {
+            break
+        }
+        if (dateResult.dateAnswer == nil) {
+            break
+        }
+        observation.date_value = dateToString(dateResult.dateAnswer!, format: Web2RKDateFormat)
+        break
+    case .audio, .image, .video:
+        guard let fileResult = result as? ORKFileResult else {
+            NSLog("NO FILE")
+            break
+        }
+        guard let fileURL = fileResult.fileURL else {
+            NSLog("NO FILE URL")
+            break
+        }
+        let fileURLAbsoluteString = fileURL.absoluteString
+
+        observation.fileURLString = fileURLAbsoluteString
+        observation.str_value = fileResult.contentType!
+    case .location:
+        guard let _result = result as? ORKLocationQuestionResult else {
+            break
+        }
+        guard let location = _result.locationAnswer else {
+            break
+        }
+        observation.location_lat = String(location.coordinate.latitude)
+        observation.location_lng = String(location.coordinate.longitude)
+        observation.str_value = location.userInput
+    case .scale:
+        guard let _result = result as? ORKScaleQuestionResult else {
+            break
+        }
+        observation.double_value = _result.scaleAnswer?.doubleValue
+        break
+    case .timeOfDay:
+        guard let _result = result as? ORKTimeOfDayQuestionResult else {
+            break
+        }
+        guard var components = _result.dateComponentsAnswer else {
+            break
+        }
+        components.calendar = NSCalendar.current
+        if let date = components.date {
+            observation.time_value = dateToString(date, format: "HH:mm", timeZone: NSTimeZone.local.identifier)
+        }
+        // if let hour = components.hour,
+        // let minute = components.minute {
+        // observation.time_value = "\(hour):\(minute)"
+        // }
+    default:
+        observation.str_value = ""
+        break
+    }
+
+}
